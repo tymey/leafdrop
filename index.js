@@ -99,7 +99,7 @@ $(document).ready(() => {
   // Tweet Feed Options
   const tweetFeedOptions = {
     spaceBetween: '20px',
-    updateTime: 3000
+    updateTime: 400
   }
 
   // Function to show all tweets stored in streams.home from a starting position in the array
@@ -120,8 +120,15 @@ $(document).ready(() => {
       $pText.prepend($userSpan);
 
       const $pTime = $('<p>').text(moment(tweet.created_at).format('MMMM Do YYYY, h:mm:ss a') + ' --- ');
-      const $timeSpan = $('<span>')
-      
+      let current = tweet.created_at;
+      let timeElapsed = moment(current).fromNow();
+      const $timeSpan = $('<span>').text(`${timeElapsed}`)
+        .on('mouseover', () => {
+          timeElapsed = moment(current).from();
+          $timeSpan.text(`${timeElapsed}`);
+        });
+      $pTime.append($timeSpan);
+
       $tweet.append($pText).append($pTime);
 
       return $tweet;
