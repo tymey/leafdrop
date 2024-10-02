@@ -63,7 +63,16 @@ $(document).ready(() => {
         .css('padding-bottom', tweetFeedOptions.spaceBetween);
       // const text = `@${tweet.user}: ${tweet.message}`;
       
-      const $pText = $(`<p><span id="action-username">@${tweet.user}</span>: ${tweet.message}</p>`);
+      const $pText = $(`<p>: ${tweet.message}</p>`);
+      const $userSpan = $('<span>').text(`@${tweet.user}`)
+        .css('font-weight', 'bold')
+        .on('click', () => {
+          let userTweets = streams.users[tweet.user];
+          $tweetFeedDiv.html('');
+          createTweets(0, userTweets);
+        });
+      
+      $pText.prepend($userSpan);
       const $pTime = $('<p>').text(moment().format('MMMM Do YYYY, h:mm:ss a') + ' --- ' + moment(tweet.created_At).fromNow());
 
       $tweet.append($pText).append($pTime);
@@ -78,13 +87,7 @@ $(document).ready(() => {
     createTweets($tweetFeedDiv.children().length);
     setTimeout(autoUpdate, tweetFeedOptions.updateTime);
   }
-  autoUpdate();
+  // autoUpdate();
 
-
-  // function userFilter() {
-  //   const userTweets = streams.users[this.user];
-  //   $tweetFeedDiv.html('');
-  //   createTweets(0, userTweets);
-  // }
 
 });
