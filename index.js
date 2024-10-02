@@ -135,7 +135,7 @@ $(document).ready(() => {
         .css('font-weight', 'bold')
         .on('click', () => {
           autoUpdateFeature = false;
-          $autoUpdateButton.text('Resume Auto Update');
+          $autoUpdateButton.text('Return to Home Feed');
           setTimeout(() => {
             $tweetFeedDiv.html('');
             let userTweets = streams.users[tweet.user];
