@@ -77,24 +77,44 @@ $(document).ready(() => {
       writeTweet(message);
       username = '';
       message = '';
-    });
+    })
+    .css('cursor', 'pointer')
+    .css('cursor', 'hand');
   $postTweetForm.append($tweetButton);
 
-  // Create <button> to update tweets on click
-  // $updateButton = $('<button>')
-  //   .text('Press Me')
-  //   .on('click', () => {
-  //     createTweets($tweetFeedDiv.children().length);
-  //   })
-  //   .css('cursor', 'pointer')
-  //   .css('cursor', 'hand');
-  // // Append to $topInputTweetDiv
-  // $topInputTweetDiv.append($updateButton);
+  // Create #tweet-feed-options div and append to $contentDiv
+  const $tweetFeedOptionsDiv = $('<div>')
+    .attr('id', 'tweet-feed-options')
+    .css('padding-top', '20px');
+  $contentDiv.append($tweetFeedOptionsDiv);
+
+  let autoUpdateFeature = true;
+
+  // Add button to pause and unpause Auto Update Feature
+  const $autoUpdateButton = $('<button>')
+  .text('Pause Auto Update')
+  .on('click', () => {
+    if ($autoUpdateButton.text() === 'Pause Auto Update') {
+      autoUpdateFeature = false;
+      $autoUpdateButton.text('Resume Auto Update');
+    } else {
+      autoUpdateFeature = true;
+      autoUpdate();
+      $autoUpdateButton.text('Pause Auto Update');
+    }
+  })
+  .css('cursor', 'pointer')
+  .css('cursor', 'hand');
+
+  // Append button to $tweetFeedOptionsDiv
+  $tweetFeedOptionsDiv.append($autoUpdateButton);
+
 
   // Create #tweet-feed div and append to $contentDiv
   const $tweetFeedDiv = $('<div>')
     .attr('id', 'tweet-feed');
   $contentDiv.append($tweetFeedDiv);
+
 
   // Tweet Feed Options
   const tweetFeedOptions = {
@@ -115,7 +135,9 @@ $(document).ready(() => {
         .css('font-weight', 'bold')
         .on('click', () => {
           
-        });
+        })
+        .css('cursor', 'pointer')
+        .css('cursor', 'hand');
       
       $pText.prepend($userSpan);
 
@@ -139,9 +161,12 @@ $(document).ready(() => {
   // At launch, show the current tweets stored in streams.home and update the feed as they are created.
   function autoUpdate() {
     createTweets(streams.home.length - $tweetFeedDiv.children().length);
-    setTimeout(autoUpdate, tweetFeedOptions.updateTime);
+    setTimeout(autoUpdate, (autoUpdateFeature ? tweetFeedOptions.updateTime : 10000000000));
   }
+
   autoUpdate();
+  
+
 
 
 });
