@@ -1,7 +1,7 @@
 
 $(document).ready(() => {
   const $body = $('body');
-  $body.html('');
+  $body.html(''); // Clears the body
 
   const $tweets = streams.home.map((tweet) => {
     const $tweet = $('<div></div>');
