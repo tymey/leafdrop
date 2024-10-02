@@ -53,13 +53,14 @@ $(document).ready(() => {
   // Tweet Feed Options
   const tweetFeedOptions = {
     spaceBetween: '20px',
-    updateTime: 3000
+    updateTime: 4000
   }
 
   // Function to show all tweets stored in streams.home from a starting position in the array
-  function createTweets(start = 0, tweets = streams.home) {
-    const $tweets = tweets.slice(start).map((tweet) => {
+  function createTweets(finish = streams.home.length, tweets = streams.home) {
+    const $tweets = tweets.slice(0, finish).map((tweet) => {
       const $tweet = $('<div></div>')
+        .attr('class', `${tweet.user}-tweet`)
         .css('padding-bottom', tweetFeedOptions.spaceBetween);
       // const text = `@${tweet.user}: ${tweet.message}`;
       
@@ -67,14 +68,14 @@ $(document).ready(() => {
       const $userSpan = $('<span>').text(`@${tweet.user}`)
         .css('font-weight', 'bold')
         .on('click', () => {
-          let userTweets = streams.users[tweet.user];
-          $tweetFeedDiv.html('');
-          createTweets(0, userTweets);
+          
         });
       
       $pText.prepend($userSpan);
-      const $pTime = $('<p>').text(moment().format('MMMM Do YYYY, h:mm:ss a') + ' --- ' + moment(tweet.created_At).fromNow());
 
+      const $pTime = $('<p>').text(moment(tweet.created_at).format('MMMM Do YYYY, h:mm:ss a') + ' --- ');
+      const $timeSpan = $('<span>')
+      
       $tweet.append($pText).append($pTime);
 
       return $tweet;
@@ -84,10 +85,10 @@ $(document).ready(() => {
 
   // At launch, show the current tweets stored in streams.home and update the feed as they are created.
   function autoUpdate() {
-    createTweets($tweetFeedDiv.children().length);
+    createTweets(streams.home.length - $tweetFeedDiv.children().length);
     setTimeout(autoUpdate, tweetFeedOptions.updateTime);
   }
-  // autoUpdate();
+  autoUpdate();
 
 
 });

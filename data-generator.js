@@ -19,7 +19,7 @@ const users = Object.keys(streams.users);
 const addTweet = (newTweet) => {
   const username = newTweet.user;
   streams.users[username].push(newTweet);
-  streams.home.push(newTweet);
+  streams.home.unshift(newTweet);
 };
 
 // Utility function
