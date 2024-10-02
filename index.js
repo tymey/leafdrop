@@ -34,23 +34,57 @@ $(document).ready(() => {
     .attr('id', 'top-input-tweet');
   $contentDiv.append($topInputTweetDiv);
 
+  // Create <button> to update tweets on click
+  $updateButton = $('<button>')
+    .text('Press Me')
+    .on('click', () => {
+      createTweets($tweetFeedDiv.children().length);
+    })
+    .css('cursor', 'pointer')
+    .css('cursor', 'hand');
+  // Append to $topInputTweetDiv
+  $topInputTweetDiv.append($updateButton);
+
   // Create #tweet-feed div and append to $contentDiv
   const $tweetFeedDiv = $('<div>')
     .attr('id', 'tweet-feed');
   $contentDiv.append($tweetFeedDiv);
 
-function createTweets() {
-  const $tweets = streams.home.map((tweet) => {
-    const $tweet = $('<div></div>');
-    const text = `@${tweet.user}: ${tweet.message}`;
+  // Tweet Feed Options
+  const tweetFeedOptions = {
+    spaceBetween: '20px',
+    updateTime: 3000
+  }
 
-    $tweet.text(text);
+  // Function to show all tweets stored in streams.home from a starting position in the array
+  function createTweets(start = 0, tweets = streams.home) {
+    const $tweets = tweets.slice(start).map((tweet) => {
+      const $tweet = $('<div></div>')
+        .css('padding-bottom', tweetFeedOptions.spaceBetween);
+      // const text = `@${tweet.user}: ${tweet.message}`;
+      
+      const $pText = $(`<p><span id="action-username">@${tweet.user}</span>: ${tweet.message}</p>`);
+      const $pTime = $('<p>').text(moment().format('MMMM Do YYYY, h:mm:ss a') + ' --- ' + moment(tweet.created_At).fromNow());
 
-    return $tweet;
-  });
-  $tweetFeedDiv.append($tweets);
-}
+      $tweet.append($pText).append($pTime);
 
-createTweets();
+      return $tweet;
+    });
+    $tweetFeedDiv.prepend($tweets);
+  }
+
+  // At launch, show the current tweets stored in streams.home and update the feed as they are created.
+  function autoUpdate() {
+    createTweets($tweetFeedDiv.children().length);
+    setTimeout(autoUpdate, tweetFeedOptions.updateTime);
+  }
+  autoUpdate();
+
+
+  // function userFilter() {
+  //   const userTweets = streams.users[this.user];
+  //   $tweetFeedDiv.html('');
+  //   createTweets(0, userTweets);
+  // }
 
 });
