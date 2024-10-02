@@ -134,7 +134,13 @@ $(document).ready(() => {
       const $userSpan = $('<span>').text(`@${tweet.user}`)
         .css('font-weight', 'bold')
         .on('click', () => {
-          
+          autoUpdateFeature = false;
+          $autoUpdateButton.text('Resume Auto Update');
+          setTimeout(() => {
+            $tweetFeedDiv.html('');
+            let userTweets = streams.users[tweet.user];
+            createTweets(userTweets.length, userTweets);
+          }, 300);
         })
         .css('cursor', 'pointer')
         .css('cursor', 'hand');
