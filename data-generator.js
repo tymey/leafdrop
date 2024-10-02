@@ -77,6 +77,7 @@ const writeTweet = (message) => {
   const tweet = {
     user: visitor,
     message: message,
+    created_at: new Date(),
   };
   addTweet(tweet);
 };
