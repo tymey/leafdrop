@@ -1,13 +1,20 @@
 
 $(document).ready(() => {
   
+  const $head = $('head');
+  const $style = $('<style>');
+  $head.append($style);
+
+  $style.text('body { background: url(/img/falling-leaf.png) repeat;}')
+
   ////////////////
   ///// BODY /////
   ////////////////
   
   const $body = $('body');
   $body.html(''); // Clears the body
-  $body.css('background-color', '')
+
+  $body.css('background-color', 'rgb(160, 250, 150)')
 
   //////////////////////////////
   ///// ALL-CONTENTS (DIV) /////
@@ -16,7 +23,8 @@ $(document).ready(() => {
   // Create #all-contents div and append to $body
   const $allContentsDiv = $('<div>')
     .attr('id', 'all-contents')
-    .attr('class', 'all-contents');
+    .attr('class', 'all-contents')
+    .css('width', '700px');
   $body.append($allContentsDiv);
 
   ///////////////
@@ -27,11 +35,12 @@ $(document).ready(() => {
   const $nav = $('<nav>');
   $allContentsDiv.append($nav);
 
-  const $websiteTitle = $('<h1>')
-    .text('Twiddler')
+  const $websiteHead = $('<h1>')
+    .text('')
     .css('margin', 'auto')
-    .css('width', '50%');
-  $nav.append($websiteTitle);
+    .css('width', '50%')
+    .css('padding-top', '0px');
+  $nav.append($websiteHead);
 
   ////////////////
   ///// MAIN /////
@@ -48,31 +57,43 @@ $(document).ready(() => {
   // Create #sidebar div and append to $main
   const $sidebarDiv = $('<div>')
     .attr('id', 'sidebar')
-    .attr('class', 'sidebar');
+    .attr('class', 'sidebar')
+    .css('float', 'left')
+    .css('width', '300px');
   $main.append($sidebarDiv);
 
-  /////////////////////////
-  ///// CONTENT (DIV) /////
-  /////////////////////////
+  ///////////////////////////////////
+  ///// SITE-LOGO (SIDEBAR DIV) /////
+  ///////////////////////////////////
 
-  // Create #content div and append to $main
-  const $contentDiv = $('<div>')
-    .attr('id', 'content')
-    .attr('class', 'content');
-  $main.append($contentDiv);
+  // Create site logo div and append to $sidebarDiv
+  const $siteLogoDiv = $('<div>')
+    .attr('id', 'site-logo');
+  $sidebarDiv.append($siteLogoDiv);
 
+  // Create $siteLogo <img> tag with logo image and append to $siteLogoDiv
+  const $siteLogo = $('<img>')
+    .attr('src', '/img/kawaii-leaf-lovepik.png')
+    .css('width', '250px')
+    .css('padding-right', '40px')
+    .css('background-color', 'rgb(160, 250, 150)');
+    $siteLogoDiv.append($siteLogo);
+  
   /////////////////////////////////////////
-  ///// TOP-INPUT-TWEET (CONTENT DIV) /////
+  ///// TOP-INPUT-TWEET (SIDEBAR DIV) /////
   /////////////////////////////////////////
 
-  // Create #top-input-tweet div and append to $contentDiv
+  // Create #top-input-tweet div and append to $sidebarDiv
   const $topInputTweetDiv = $('<div>')
-    .attr('id', 'top-input-tweet');
-  $contentDiv.append($topInputTweetDiv);
+    .attr('id', 'top-input-tweet')
+    .css('padding-left', '50px');
+  $sidebarDiv.append($topInputTweetDiv);
 
   // Create a header for inputting a tweet
   const $inputTweetHeader = $('<h2>')
-    .text(`What's on your mind?...`);
+    .text(`Drop a leaf...`)
+    .css('font-size', '1.5em')
+    .css('font-family', '"Lemon", serif');
 
   // Create a form for posting a tweet
   const $postTweetForm = $('<form>')
@@ -104,7 +125,7 @@ $(document).ready(() => {
   // Create a button to post the tweet created
   const $tweetButton = $('<button>')
     .attr('type', 'button')
-    .text(`Tweet!`)
+    .text(`Drop!`)
     .on('click', () => {
       let username = document.getElementById('username').value;
       let message = document.getElementById('tweet-msg').value;
@@ -115,18 +136,22 @@ $(document).ready(() => {
       message = '';
     })
     .css('cursor', 'pointer')
-    .css('cursor', 'hand');
+    .css('cursor', 'hand')
+    .css('border-radius', '10px')
+    .css('background-color', 'rgb(50, 200, 30)');
   $postTweetForm.append($tweetButton);
 
-////////////////////////////////////
-///// TWEET-FEED-OPTIONS (DIV) /////
-////////////////////////////////////
+
+  ////////////////////////////////////
+  ///// TWEET-FEED-OPTIONS (DIV) /////
+  ////////////////////////////////////
 
   // Create #tweet-feed-options div and append to $contentDiv
   const $tweetFeedOptionsDiv = $('<div>')
     .attr('id', 'tweet-feed-options')
-    .css('padding-top', '20px');
-  $contentDiv.append($tweetFeedOptionsDiv);
+    .css('padding-top', '20px')
+    .css('padding-left', '50px');
+  $sidebarDiv.append($tweetFeedOptionsDiv);
 
   let autoUpdateFeature = true;
 
@@ -140,7 +165,7 @@ $(document).ready(() => {
     } else {
       $tweetFeedDiv.html('');
       autoUpdateFeature = true;
-      setTimeout(autoUpdate, 300);
+      setTimeout(autoUpdate, 50);
       $autoUpdateButton.text('Pause Feed');
     }
   })
@@ -150,28 +175,71 @@ $(document).ready(() => {
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
 
+  // Tweet Feed Options
+  const tweetFeedOptions = {
+    spaceBetween: '0px',
+    updateTime: 400
+  }
+
+
+  /////////////////////////
+  ///// CONTENT (DIV) /////
+  /////////////////////////
+
+  // Create #content div and append to $main
+  const $contentDiv = $('<div>')
+    .attr('id', 'content')
+    .attr('class', 'content')
+    .css('float', 'right')
+    .css('width', '400px');
+  $main.append($contentDiv);
+
+  ///////////////////////////////////////
+  ///// WEBSITE-TITLE (CONTENT DIV) /////
+  ///////////////////////////////////////
+
+  // Create website title div and append to $contentDiv
+  const $websiteTitleDiv = $('<div>')
+    .attr('id', 'website-title')
+    .css('padding-top', '30px')
+    .css('padding-bottom', '0px');
+  $contentDiv.append($websiteTitleDiv);
+
+  // Create website title header and append to $websiteTitleDiv
+  const $websiteTitleHeader = $('<h1>')
+    .text('Leafdrop')
+    .css('font-size', '5em')
+    .css('font-family', '"Lemon", serif');
+  $websiteTitleDiv.append($websiteTitleHeader);
+
+  
+
+  ////////////////////////////////////
+  ///// TWEET-FEED (CONTENT DIV) /////
+  ////////////////////////////////////
 
   // Create #tweet-feed div and append to $contentDiv
   const $tweetFeedDiv = $('<div>')
     .attr('id', 'tweet-feed');
   $contentDiv.append($tweetFeedDiv);
 
-
-  // Tweet Feed Options
-  const tweetFeedOptions = {
-    spaceBetween: '20px',
-    updateTime: 400
-  }
-
   // Function to show all tweets stored in streams.home from a starting position in the array
   function createTweets(finish = streams.home.length, tweets = streams.home) {
     const $tweets = tweets.slice(0, finish).map((tweet) => {
+      const $tweetContainer = $('<div>')
+        .attr('class', 'tweet-container');
       const $tweet = $('<div></div>')
         .attr('class', `${tweet.user}-tweet`)
+        .css('border-style', 'outset')
+        .css('border-width', '10px')
+        .css('border-color', 'rgb(70, 200, 120)')
+        .css('border-radius', '10px')
+        .css('background-color', 'rgb(90, 180, 110)')
         .css('padding-bottom', tweetFeedOptions.spaceBetween);
       // const text = `@${tweet.user}: ${tweet.message}`;
       
-      const $pText = $(`<p>: ${tweet.message}</p>`);
+      const $pText = $(`<p>: ${tweet.message}</p>`)
+        .css('padding-left', '10px');
       const $userSpan = $('<span>').text(`@${tweet.user}`)
         .css('font-weight', 'bold')
         .on('click', () => {
@@ -185,10 +253,12 @@ $(document).ready(() => {
         })
         .css('cursor', 'pointer')
         .css('cursor', 'hand');
-      
+
       $pText.prepend($userSpan);
 
-      const $pTime = $('<p>').text(moment(tweet.created_at).format('MMMM Do YYYY, h:mm:ss a') + ' --- ');
+      const $pTime = $('<p>')
+        .css('padding-left', '10px')
+        .text(moment(tweet.created_at).format('MMM Do YYYY') + ' --- ');
       let current = tweet.created_at;
       let timeElapsed = moment(current).fromNow();
       const $timeSpan = $('<span>').text(`${timeElapsed}`)
@@ -200,7 +270,13 @@ $(document).ready(() => {
 
       $tweet.append($pText).append($pTime);
 
-      return $tweet;
+      const $tweetSpacer = $('<div>')
+        .attr('class', 'tweet-spacer')
+        .css('padding', '10px');
+
+      $tweetContainer.append($tweet, $tweetSpacer);
+      
+      return $tweetContainer;
     });
     $tweetFeedDiv.prepend($tweets);
   }
