@@ -93,7 +93,9 @@ $(document).ready(() => {
   const $inputTweetHeader = $('<h2>')
     .text(`Drop a leaf...`)
     .css('font-size', '1.5em')
-    .css('font-family', '"Lemon", serif');
+    .css('font-family', '"Lemon", serif')
+    .css('color', 'rgb(170, 100, 10)')
+    .css('margin-bottom', '15px');
 
   // Create a form for posting a tweet
   const $postTweetForm = $('<form>')
@@ -191,6 +193,25 @@ $(document).ready(() => {
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
 
+  // Create slider container div and append to $tweetFeedOptionsDiv
+  const $sliderContainer = $('<div>')
+    .attr('class', 'slider-container');
+  $tweetFeedOptionsDiv.append($sliderContainer);
+
+  // Create update speed slider input and append to $sliderContainer
+  const $updateSpeedSlider = $('<input>')
+    .attr('type', 'range')
+    .attr('min', '0').attr('max', '10000')
+    .attr('value', '400')
+    .attr('class', 'slider').attr('id', 'update-range')
+    .css('accent-color', 'green')
+    .css('width', '220px')
+    .on('mouseup', () => {
+      let value = document.getElementById('update-range').value;
+      tweetFeedOptions.updateTime = value;
+    });
+  $sliderContainer.append($updateSpeedSlider);
+
   // Tweet Feed Options
   const tweetFeedOptions = {
     spaceBetween: '0px',
@@ -239,24 +260,45 @@ $(document).ready(() => {
     .attr('id', 'tweet-feed');
   $contentDiv.append($tweetFeedDiv);
 
+  // Leaf Color Array
+  const leafColor = [
+    {
+      // Green
+      border: 'rgb(70, 200, 120)',
+      background: 'rgb(90, 180, 110)'
+    },
+    {
+      // Mostly yellow, hint of red
+      border: 'rgb(175, 75, 10)',
+      background: 'rgb(230, 200, 40)'
+    },
+    {},
+    {},
+    {},
+    {}
+  ];
+  
   // Function to show all tweets stored in streams.home from a starting position in the array
   function createTweets(finish = streams.home.length, tweets = streams.home) {
     const $tweets = tweets.slice(0, finish).map((tweet) => {
       
+      const randInd = Math.floor(Math.random() * 2);
+
       const $tweet = $('<div></div>')
         .attr('class', `${tweet.user}-tweet`)
         .css('border-style', 'outset')
         .css('border-width', '10px')
-        .css('border-color', 'rgb(70, 200, 120)')
+        .css('border-color', leafColor[randInd].border)
         .css('border-radius', '10px')
-        .css('background-color', 'rgb(90, 180, 110)')
+        .css('background-color', leafColor[randInd].background)
         .css('margin-bottom', '20px')
         .css('padding', '5px');
       // const text = `@${tweet.user}: ${tweet.message}`;
       
       const $pText = $(`<p>`)
         .css('padding-left', '10px')
-        .css('font-family', '"Sofadi One", system-ui');
+        .css('font-family', '"Sofadi One", system-ui')
+        ;
       
       const $userSpan = $('<span>').text(`@${tweet.user}:`)
         .css('font-weight', 'bold')
