@@ -92,11 +92,11 @@ $(document).ready(() => {
   // Create a header for inputting a tweet
   const $inputTweetHeader = $('<h2>')
     .text(`Drop a leaf...`)
-    .css('font-size', '1.5em')
+    .css('font-size', '2em')
     .css('font-family', '"Lemon", serif')
     .css('color', 'rgb(50, 155, 100)')
     .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
-    .css('margin-bottom', '15px');
+    .css('margin-bottom', '25px');
 
   // Create a form for posting a tweet
   const $postTweetForm = $('<form>')
@@ -113,12 +113,15 @@ $(document).ready(() => {
     .attr('type', 'text')
     .attr('id', 'username')
     .attr('placeholder', 'Username')
-    .attr('rows', '5')
-    .attr('cols', '15')
     .css('padding', '5px')
+    .css('padding-left', '10px')
+    .css('padding-right', '10px')
     .css('font-family', '"Sofadi One", system-ui')
     .css('margin-bottom', '10px')
     .css('border-radius', '10px')
+    .css('border-style', 'inset')
+    .css('border-width', '5px')
+    .css('border-color', 'green')
     .css('background-color', 'rgb(50, 200, 30)');
   $usernameInputDiv.append($usernameInput);
   $postTweetForm.append($usernameInputDiv);
@@ -130,9 +133,14 @@ $(document).ready(() => {
     .attr('id', 'tweet-msg')
     .attr('placeholder', 'Leaf note...')
     .attr('rows', '4')
-    .attr('cols', '25')
+    .attr('cols', '23')
     .css('padding', '5px')
+    .css('padding-left', '10px')
+    .css('padding-right', '10px')
     .css('border-radius', '10px')
+    .css('border-style', 'inset')
+    .css('border-width', '5px')
+    .css('border-color', 'green')
     .css('background-color', 'rgb(50, 200, 30)')
     .css('margin-bottom', '5px')
     .css('font-family', '"Sofadi One", system-ui');
@@ -211,7 +219,7 @@ $(document).ready(() => {
   const $updateSpeedSlider = $('<input>')
     .attr('type', 'range')
     .attr('min', '0').attr('max', '10000')
-    .attr('value', '9600')
+    .attr('value', '9500')
     .attr('class', 'slider').attr('id', 'update-range')
     .css('accent-color', 'rgb(70, 150, 50)')
     .css('width', '220px')
@@ -245,14 +253,14 @@ $(document).ready(() => {
 
   // Create speed description container and append to $slideContainer
   const $speedDesc = $('<p>')
-    .text('\nUpdates every ')
+    .text('Updates every ')
     .css('color', 'rgb(30, 105, 100)')
     .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
     .css('font-family', '"Lemon", serif')
     .css('font-size', '0.9em');
 
   const $currentSpeed = $('<span>')
-    .text('0.4 seconds');
+    .text('0.5 seconds');
 
   $speedDesc.append($currentSpeed);
   $slowToFastDesc.append($speedDesc);
@@ -261,7 +269,7 @@ $(document).ready(() => {
   // Tweet Feed Options
   const tweetFeedOptions = {
     spaceBetween: '0px',
-    updateTime: 400
+    updateTime: 500
   }
 
 
@@ -284,14 +292,14 @@ $(document).ready(() => {
   // Create website title div and append to $contentDiv
   const $websiteTitleDiv = $('<div>')
     .attr('id', 'website-title')
-    .css('padding-top', '100px')
+    .css('padding-top', '80px')
     .css('padding-bottom', '60px');
   $contentDiv.append($websiteTitleDiv);
 
   // Create website title header and append to $websiteTitleDiv
   const $websiteTitleHeader = $('<h1>')
     .text('Leafdrop')
-    .css('font-size', '5em')
+    .css('font-size', '6em')
     .css('font-family', '"Lemon", serif')
     .css('color', 'rgb(50, 155, 100)')
     .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00');
@@ -361,8 +369,7 @@ $(document).ready(() => {
       
       const $pText = $(`<p>`)
         .css('padding-left', '10px')
-        .css('font-family', '"Sofadi One", system-ui')
-        ;
+        .css('font-family', '"Sofadi One", system-ui');
       
       const $userSpan = $('<span>').text(`@${tweet.user}:`)
         .css('font-weight', 'bold')
@@ -442,7 +449,11 @@ $(document).ready(() => {
 
   autoUpdate();
 
+  // Working on a way to update time while page is running
+  function timeElapsedUpdate() {
+    timeElapsed = moment(current).from();
+    $timeSpan.text(`${timeElapsed}`);
+  }
   
-
 
 });
