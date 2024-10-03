@@ -24,7 +24,8 @@ $(document).ready(() => {
   const $allContentsDiv = $('<div>')
     .attr('id', 'all-contents')
     .attr('class', 'all-contents')
-    .css('width', '700px');
+    .css('margin', 'auto')
+    .css('width', '750px');
   $body.append($allContentsDiv);
 
   ///////////////
@@ -59,7 +60,7 @@ $(document).ready(() => {
     .attr('id', 'sidebar')
     .attr('class', 'sidebar')
     .css('float', 'left')
-    .css('width', '300px');
+    .css('width', '350px');
   $main.append($sidebarDiv);
 
   ///////////////////////////////////
@@ -74,9 +75,8 @@ $(document).ready(() => {
   // Create $siteLogo <img> tag with logo image and append to $siteLogoDiv
   const $siteLogo = $('<img>')
     .attr('src', '/img/kawaii-leaf-lovepik.png')
-    .css('width', '250px')
-    .css('padding-right', '40px')
-    .css('background-color', 'rgb(160, 250, 150)');
+    .css('width', '310px');
+    // .css('background-color', 'rgb(160, 250, 150)');
     $siteLogoDiv.append($siteLogo);
   
   /////////////////////////////////////////
@@ -109,7 +109,14 @@ $(document).ready(() => {
   const $usernameInput = $('<input>')
     .attr('type', 'text')
     .attr('id', 'username')
-    .attr('placeholder', 'Username');
+    .attr('placeholder', 'Username')
+    .attr('rows', '5')
+    .attr('cols', '15')
+    .css('padding', '5px')
+    .css('font-family', '"Sofadi One", system-ui')
+    .css('margin-bottom', '10px')
+    .css('border-radius', '10px')
+    .css('background-color', 'rgb(50, 200, 30)');
   $usernameInputDiv.append($usernameInput);
   $postTweetForm.append($usernameInputDiv);
 
@@ -118,7 +125,14 @@ $(document).ready(() => {
     .attr('id', 'get-tweet-msg');
   const $tweetMsgTextArea = $('<textarea>')
     .attr('id', 'tweet-msg')
-    .attr('placeholder', 'Tweet here...');
+    .attr('placeholder', 'Leaf note...')
+    .attr('rows', '4')
+    .attr('cols', '25')
+    .css('padding', '5px')
+    .css('border-radius', '10px')
+    .css('background-color', 'rgb(50, 200, 30)')
+    .css('margin-bottom', '5px')
+    .css('font-family', '"Sofadi One", system-ui');
   $tweetMsgDiv.append($tweetMsgTextArea);
   $postTweetForm.append($tweetMsgDiv);
 
@@ -170,7 +184,9 @@ $(document).ready(() => {
     }
   })
   .css('cursor', 'pointer')
-  .css('cursor', 'hand');
+  .css('cursor', 'hand')
+  .css('border-radius', '10px')
+  .css('background-color', 'rgb(50, 200, 30)');
 
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
@@ -201,8 +217,8 @@ $(document).ready(() => {
   // Create website title div and append to $contentDiv
   const $websiteTitleDiv = $('<div>')
     .attr('id', 'website-title')
-    .css('padding-top', '30px')
-    .css('padding-bottom', '0px');
+    .css('padding-top', '100px')
+    .css('padding-bottom', '60px');
   $contentDiv.append($websiteTitleDiv);
 
   // Create website title header and append to $websiteTitleDiv
@@ -226,8 +242,7 @@ $(document).ready(() => {
   // Function to show all tweets stored in streams.home from a starting position in the array
   function createTweets(finish = streams.home.length, tweets = streams.home) {
     const $tweets = tweets.slice(0, finish).map((tweet) => {
-      const $tweetContainer = $('<div>')
-        .attr('class', 'tweet-container');
+      
       const $tweet = $('<div></div>')
         .attr('class', `${tweet.user}-tweet`)
         .css('border-style', 'outset')
@@ -235,11 +250,14 @@ $(document).ready(() => {
         .css('border-color', 'rgb(70, 200, 120)')
         .css('border-radius', '10px')
         .css('background-color', 'rgb(90, 180, 110)')
+        .css('margin-bottom', '20px')
         .css('padding-bottom', tweetFeedOptions.spaceBetween);
       // const text = `@${tweet.user}: ${tweet.message}`;
       
       const $pText = $(`<p>: ${tweet.message}</p>`)
-        .css('padding-left', '10px');
+        .css('padding-left', '10px')
+        .css('font-family', '"Sofadi One", system-ui');
+      
       const $userSpan = $('<span>').text(`@${tweet.user}`)
         .css('font-weight', 'bold')
         .on('click', () => {
@@ -258,9 +276,11 @@ $(document).ready(() => {
 
       const $pTime = $('<p>')
         .css('padding-left', '10px')
-        .text(moment(tweet.created_at).format('MMM Do YYYY') + ' --- ');
+        .text(moment(tweet.created_at).format('MMM Do YYYY') + ' --- ')
+        .css('font-family', '"Nothing You Could Do", cursive');
       let current = tweet.created_at;
       let timeElapsed = moment(current).fromNow();
+      
       const $timeSpan = $('<span>').text(`${timeElapsed}`)
         .on('mouseover', () => {
           timeElapsed = moment(current).from();
@@ -270,13 +290,9 @@ $(document).ready(() => {
 
       $tweet.append($pText).append($pTime);
 
-      const $tweetSpacer = $('<div>')
-        .attr('class', 'tweet-spacer')
-        .css('padding', '10px');
-
-      $tweetContainer.append($tweet, $tweetSpacer);
       
-      return $tweetContainer;
+      
+      return $tweet;
     });
     $tweetFeedDiv.prepend($tweets);
   }
