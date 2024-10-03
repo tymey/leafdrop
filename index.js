@@ -1,7 +1,17 @@
 
 $(document).ready(() => {
+  
+  ////////////////
+  ///// BODY /////
+  ////////////////
+  
   const $body = $('body');
   $body.html(''); // Clears the body
+  $body.css('background-color', '')
+
+  //////////////////////////////
+  ///// ALL-CONTENTS (DIV) /////
+  //////////////////////////////
 
   // Create #all-contents div and append to $body
   const $allContentsDiv = $('<div>')
@@ -9,13 +19,31 @@ $(document).ready(() => {
     .attr('class', 'all-contents');
   $body.append($allContentsDiv);
 
+  ///////////////
+  ///// NAV /////
+  ///////////////
+
   // Create <nav> and append to $allContentsDiv
   const $nav = $('<nav>');
   $allContentsDiv.append($nav);
 
+  const $websiteTitle = $('<h1>')
+    .text('Twiddler')
+    .css('margin', 'auto')
+    .css('width', '50%');
+  $nav.append($websiteTitle);
+
+  ////////////////
+  ///// MAIN /////
+  ////////////////
+
   // Create <main> and append to $allContentsDiv
   const $main = $('<main>');
   $allContentsDiv.append($main);
+
+  /////////////////////////
+  ///// SIDEBAR (DIV) /////
+  /////////////////////////
 
   // Create #sidebar div and append to $main
   const $sidebarDiv = $('<div>')
@@ -23,11 +51,19 @@ $(document).ready(() => {
     .attr('class', 'sidebar');
   $main.append($sidebarDiv);
 
+  /////////////////////////
+  ///// CONTENT (DIV) /////
+  /////////////////////////
+
   // Create #content div and append to $main
   const $contentDiv = $('<div>')
     .attr('id', 'content')
     .attr('class', 'content');
   $main.append($contentDiv);
+
+  /////////////////////////////////////////
+  ///// TOP-INPUT-TWEET (CONTENT DIV) /////
+  /////////////////////////////////////////
 
   // Create #top-input-tweet div and append to $contentDiv
   const $topInputTweetDiv = $('<div>')
@@ -82,6 +118,10 @@ $(document).ready(() => {
     .css('cursor', 'hand');
   $postTweetForm.append($tweetButton);
 
+////////////////////////////////////
+///// TWEET-FEED-OPTIONS (DIV) /////
+////////////////////////////////////
+
   // Create #tweet-feed-options div and append to $contentDiv
   const $tweetFeedOptionsDiv = $('<div>')
     .attr('id', 'tweet-feed-options')
@@ -92,15 +132,16 @@ $(document).ready(() => {
 
   // Add button to pause and unpause Auto Update Feature
   const $autoUpdateButton = $('<button>')
-  .text('Pause Auto Update')
+  .text('Pause Feed')
   .on('click', () => {
-    if ($autoUpdateButton.text() === 'Pause Auto Update') {
+    if ($autoUpdateButton.text() === 'Pause Feed') {
       autoUpdateFeature = false;
-      $autoUpdateButton.text('Resume Auto Update');
+      $autoUpdateButton.text('Resume Feed');
     } else {
+      $tweetFeedDiv.html('');
       autoUpdateFeature = true;
-      autoUpdate();
-      $autoUpdateButton.text('Pause Auto Update');
+      setTimeout(autoUpdate, 300);
+      $autoUpdateButton.text('Pause Feed');
     }
   })
   .css('cursor', 'pointer')
@@ -135,7 +176,7 @@ $(document).ready(() => {
         .css('font-weight', 'bold')
         .on('click', () => {
           autoUpdateFeature = false;
-          $autoUpdateButton.text('Return to Home Feed');
+          $autoUpdateButton.text('(Paused) Return to Home Feed');
           setTimeout(() => {
             $tweetFeedDiv.html('');
             let userTweets = streams.users[tweet.user];
