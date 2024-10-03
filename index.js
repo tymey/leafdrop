@@ -25,7 +25,7 @@ $(document).ready(() => {
     .attr('id', 'all-contents')
     .attr('class', 'all-contents')
     .css('margin', 'auto')
-    .css('width', '750px');
+    .css('width', '850px');
   $body.append($allContentsDiv);
 
   ///////////////
@@ -94,7 +94,8 @@ $(document).ready(() => {
     .text(`Drop a leaf...`)
     .css('font-size', '1.5em')
     .css('font-family', '"Lemon", serif')
-    .css('color', 'rgb(170, 100, 10)')
+    .css('color', 'rgb(50, 155, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
     .css('margin-bottom', '15px');
 
   // Create a form for posting a tweet
@@ -154,7 +155,10 @@ $(document).ready(() => {
     .css('cursor', 'pointer')
     .css('cursor', 'hand')
     .css('border-radius', '10px')
-    .css('background-color', 'rgb(50, 200, 30)');
+    .css('background-color', 'rgb(150, 250, 100)')
+    .css('color', 'rgb(30, 105, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('font-family', '"Lemon", serif');
   $postTweetForm.append($tweetButton);
 
 
@@ -165,7 +169,7 @@ $(document).ready(() => {
   // Create #tweet-feed-options div and append to $contentDiv
   const $tweetFeedOptionsDiv = $('<div>')
     .attr('id', 'tweet-feed-options')
-    .css('padding-top', '20px')
+    .css('margin-top', '40px')
     .css('padding-left', '50px');
   $sidebarDiv.append($tweetFeedOptionsDiv);
 
@@ -188,29 +192,67 @@ $(document).ready(() => {
   .css('cursor', 'pointer')
   .css('cursor', 'hand')
   .css('border-radius', '10px')
-  .css('background-color', 'rgb(50, 200, 30)');
+  .css('background-color', 'rgb(150, 250, 100)')
+  .css('color', 'rgb(30, 105, 100)')
+  .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+  .css('font-family', '"Lemon", serif');
 
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
 
   // Create slider container div and append to $tweetFeedOptionsDiv
   const $sliderContainer = $('<div>')
-    .attr('class', 'slider-container');
+    .attr('class', 'slider-container')
+    .css('margin-top', '10px');
   $tweetFeedOptionsDiv.append($sliderContainer);
 
   // Create update speed slider input and append to $sliderContainer
   const $updateSpeedSlider = $('<input>')
     .attr('type', 'range')
     .attr('min', '0').attr('max', '10000')
-    .attr('value', '400')
+    .attr('value', '9600')
     .attr('class', 'slider').attr('id', 'update-range')
-    .css('accent-color', 'green')
+    .css('accent-color', 'rgb(70, 150, 50)')
     .css('width', '220px')
     .on('mouseup', () => {
       let value = document.getElementById('update-range').value;
-      tweetFeedOptions.updateTime = value;
+      let updateValue = 10000 - value
+      tweetFeedOptions.updateTime = updateValue;
+      $currentSpeed.text(`${(updateValue / 1000).toFixed(1)} seconds`);
+      autoUpdate();
     });
   $sliderContainer.append($updateSpeedSlider);
+
+  // Create slider description header and append to $sliderContainer
+  const $sliderDescHeader = $('<h5>')
+    .text('Feed Update Speed')
+    .css('color', 'rgb(30, 105, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('font-family', '"Lemon", serif');
+  $sliderContainer.append($sliderDescHeader);
+
+  // Create slow to fast description and append to $sliderContainer
+  const $slowToFastDesc = $('<p>')
+    .text('Slow <-------------> Fast')
+    .css('color', 'rgb(30, 105, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('font-family', '"Lemon", serif');
+  $sliderContainer.append($slowToFastDesc);
+
+  // Create speed description container and append to $slideContainer
+  const $speedDesc = $('<p>')
+    .text('\nUpdates every ')
+    .css('color', 'rgb(30, 105, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('font-family', '"Lemon", serif')
+    .css('font-size', '0.9em');
+
+  const $currentSpeed = $('<span>')
+    .text('0.4 seconds');
+
+  $speedDesc.append($currentSpeed);
+  $slowToFastDesc.append($speedDesc);
+
 
   // Tweet Feed Options
   const tweetFeedOptions = {
@@ -228,7 +270,7 @@ $(document).ready(() => {
     .attr('id', 'content')
     .attr('class', 'content')
     .css('float', 'right')
-    .css('width', '400px');
+    .css('width', '500px');
   $main.append($contentDiv);
 
   ///////////////////////////////////////
@@ -246,7 +288,9 @@ $(document).ready(() => {
   const $websiteTitleHeader = $('<h1>')
     .text('Leafdrop')
     .css('font-size', '5em')
-    .css('font-family', '"Lemon", serif');
+    .css('font-family', '"Lemon", serif')
+    .css('color', 'rgb(50, 155, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00');
   $websiteTitleDiv.append($websiteTitleHeader);
 
   
@@ -269,20 +313,36 @@ $(document).ready(() => {
     },
     {
       // Mostly yellow, hint of red
-      border: 'rgb(175, 75, 10)',
+      border: 'rgb(250, 150, 30)',
       background: 'rgb(230, 200, 40)'
     },
-    {},
-    {},
-    {},
-    {}
+    {
+      // Mostly orange, hint of yellow
+      border: 'rgb(250, 200, 30)',
+      background: 'rgb(230, 130, 0)'
+    },
+    {
+      // Brownish green
+      border: 'rgb(150, 200, 30)',
+      background: 'rgb(150, 150, 0)'
+    },
+    {
+      // Red
+      border: 'rgb(150, 30, 30)',
+      background: 'rgb(250, 80, 40)'
+    },
+    {
+      // Purple-blueish
+      border: 'rgb(150, 30, 120)',
+      background: 'rgb(110, 100, 210)'
+    }
   ];
   
   // Function to show all tweets stored in streams.home from a starting position in the array
   function createTweets(finish = streams.home.length, tweets = streams.home) {
     const $tweets = tweets.slice(0, finish).map((tweet) => {
       
-      const randInd = Math.floor(Math.random() * 2);
+      let randInd = Math.floor(Math.random() * leafColor.length);
 
       const $tweet = $('<div></div>')
         .attr('class', `${tweet.user}-tweet`)
@@ -341,7 +401,7 @@ $(document).ready(() => {
 
       const $pTime = $('<p>')
         .css('padding-left', '10px')
-        .text(moment(tweet.created_at).format('MMM Do YYYY') + ' --- ')
+        .text(moment(tweet.created_at).format('MMM Do YYYY, h:mm:ss a') + ' --- ')
         .css('font-family', '"Nothing You Could Do", cursive');
       let current = tweet.created_at;
       let timeElapsed = moment(current).fromNow();
