@@ -180,6 +180,7 @@ $(document).ready(() => {
   .text('Pause Feed')
   .on('click', () => {
     if ($autoUpdateButton.text() === 'Pause Feed') {
+      clearTimeout(autoUpdateTimeoutId);
       autoUpdateFeature = false;
       $autoUpdateButton.text('Resume Feed');
     } else {
@@ -215,11 +216,14 @@ $(document).ready(() => {
     .css('accent-color', 'rgb(70, 150, 50)')
     .css('width', '220px')
     .on('mouseup', () => {
+      clearTimeout(autoUpdateTimeoutId);
       let value = document.getElementById('update-range').value;
       let updateValue = 10000 - value
       tweetFeedOptions.updateTime = updateValue;
       $currentSpeed.text(`${(updateValue / 1000).toFixed(1)} seconds`);
-      autoUpdate();
+      if (!($autoUpdateButton.text() === '(Paused) Return to Home Feed')) {
+        autoUpdate();
+      }
     });
   $sliderContainer.append($updateSpeedSlider);
 
@@ -366,10 +370,11 @@ $(document).ready(() => {
           autoUpdateFeature = false;
           $autoUpdateButton.text('(Paused) Return to Home Feed');
           setTimeout(() => {
+            clearTimeout(autoUpdateTimeoutId);
             $tweetFeedDiv.html('');
             let userTweets = streams.users[tweet.user];
             createTweets(userTweets.length, userTweets);
-          }, 300);
+          }, 400);
         })
         .css('cursor', 'pointer')
         .css('cursor', 'hand');
@@ -387,10 +392,11 @@ $(document).ready(() => {
             autoUpdateFeature = false;
             $autoUpdateButton.text('(Paused) Return to Home Feed');
             setTimeout(() => {
+              clearTimeout(autoUpdateTimeoutId);
               $tweetFeedDiv.html('');
               let hashtagTweets = streams.hashtag[word.slice(1)];
               createTweets(hashtagTweets.length, hashtagTweets);
-            }, 300);
+            }, 400);
           })
           .css('cursor', 'pointer')
           .css('cursor', 'hand');
@@ -415,22 +421,28 @@ $(document).ready(() => {
 
       $tweet.append($pText).append($pTime);
 
-      
-      
       return $tweet;
+    })
+    $tweets.forEach(tweet => {
+      tweet.hide();
+      tweet.slideDown(300).delay(300);
+      $tweetFeedDiv.prepend(tweet);
     });
-    $tweetFeedDiv.prepend($tweets);
+
+    // $tweetFeedDiv.prepend($tweets);
   }
+
+  let autoUpdateTimeoutId;
 
   // At launch, show the current tweets stored in streams.home and update the feed as they are created.
   function autoUpdate() {
     createTweets(streams.home.length - $tweetFeedDiv.children().length);
-    setTimeout(autoUpdate, (autoUpdateFeature ? tweetFeedOptions.updateTime : 10000000000));
+    autoUpdateTimeoutId = setTimeout(autoUpdate, (autoUpdateFeature ? tweetFeedOptions.updateTime : 10000000000));
   }
 
   autoUpdate();
-  
 
+  
 
 
 });
