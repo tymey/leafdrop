@@ -12,6 +12,9 @@ const streams = {
     mracus: [],
     douglascalhoun: [],
   },
+  hashtag: {
+
+  }
 };
 const users = Object.keys(streams.users);
 
@@ -20,6 +23,17 @@ const addTweet = (newTweet) => {
   const username = newTweet.user;
   streams.users[username].unshift(newTweet);
   streams.home.unshift(newTweet);
+  const splitMsg = newTweet.message.split(' ');
+  for (let i = 0; i < splitMsg.length; i++) {
+    if (splitMsg[i][0] === '#') {
+      if (!streams.hashtag[splitMsg[i].slice(1)]) {
+        streams.hashtag[splitMsg[i].slice(1)] = [];
+        streams.hashtag[splitMsg[i].slice(1)].unshift(newTweet);
+      } else {
+        streams.hashtag[splitMsg[i].slice(1)].unshift(newTweet);
+      }
+    }
+  }
 };
 
 // Utility function

@@ -146,8 +146,8 @@ $(document).ready(() => {
       if (!streams.users[username]) { streams.users[username] = [] }
       window.visitor = username;
       writeTweet(message);
-      username = '';
-      message = '';
+      document.getElementById('username').value = '';
+      document.getElementById('tweet-msg').value = '';
     })
     .css('cursor', 'pointer')
     .css('cursor', 'hand')
@@ -251,14 +251,14 @@ $(document).ready(() => {
         .css('border-radius', '10px')
         .css('background-color', 'rgb(90, 180, 110)')
         .css('margin-bottom', '20px')
-        .css('padding-bottom', tweetFeedOptions.spaceBetween);
+        .css('padding', '5px');
       // const text = `@${tweet.user}: ${tweet.message}`;
       
-      const $pText = $(`<p>: ${tweet.message}</p>`)
+      const $pText = $(`<p>`)
         .css('padding-left', '10px')
         .css('font-family', '"Sofadi One", system-ui');
       
-      const $userSpan = $('<span>').text(`@${tweet.user}`)
+      const $userSpan = $('<span>').text(`@${tweet.user}:`)
         .css('font-weight', 'bold')
         .on('click', () => {
           autoUpdateFeature = false;
@@ -272,7 +272,30 @@ $(document).ready(() => {
         .css('cursor', 'pointer')
         .css('cursor', 'hand');
 
-      $pText.prepend($userSpan);
+      $pText.append($userSpan);
+
+      let tweetMsgSplit = tweet.message.split(' ');
+
+      tweetMsgSplit.forEach((word) => {
+        const $spaceSpan = $('<span>').text(' ');
+        const $wordSpan = $('<span>').text(`${word}`);
+        if (word[0] === '#') {
+          $wordSpan.css('font-weight', 'bold')
+          .on('click', () => {
+            autoUpdateFeature = false;
+            $autoUpdateButton.text('(Paused) Return to Home Feed');
+            setTimeout(() => {
+              $tweetFeedDiv.html('');
+              let hashtagTweets = streams.hashtag[word.slice(1)];
+              createTweets(hashtagTweets.length, hashtagTweets);
+            }, 300);
+          })
+          .css('cursor', 'pointer')
+          .css('cursor', 'hand');
+        }
+        $pText.append($spaceSpan, $wordSpan);
+
+      });
 
       const $pTime = $('<p>')
         .css('padding-left', '10px')
