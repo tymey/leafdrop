@@ -192,6 +192,7 @@ $(document).ready(() => {
       autoUpdateFeature = false;
       $autoUpdateButton.text('Resume Feed');
     } else {
+      $subTweetFeedHeader.html('');
       $tweetFeedDiv.html('');
       autoUpdateFeature = true;
       setTimeout(autoUpdate, 50);
@@ -305,7 +306,20 @@ $(document).ready(() => {
     .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00');
   $websiteTitleDiv.append($websiteTitleHeader);
 
-  
+  ///////////////////////////////////////////////
+  ///// SUB-TWEET-FEED (CONTENT DIV) /////
+  ///////////////////////////////////////////////
+
+  // Create #sub-tweet-feed div and append to $contentDiv
+  const $subTweetFeedDiv = $('<div>')
+    .attr('id', 'sub-tweet-feed')
+    .css('text-align', 'center')
+    .css('margin-bottom', '20px');
+  $contentDiv.append($subTweetFeedDiv);
+
+  // Create #sub-tweet-feed-header header and append to $subTweetFeedDiv
+  const $subTweetFeedHeader = $('<h2>');
+  $subTweetFeedDiv.append($subTweetFeedHeader);
 
   ////////////////////////////////////
   ///// TWEET-FEED (CONTENT DIV) /////
@@ -351,8 +365,8 @@ $(document).ready(() => {
   ];
   
   // Function to show all tweets stored in streams.home from a starting position in the array
-  function createTweets(finish = streams.home.length, tweets = streams.home) {
-    const $tweets = tweets.slice(0, finish).map((tweet) => {
+  function createTweets(start = streams.home.length, tweets = streams.home) {
+    const $tweets = tweets.slice(start).map((tweet) => {
       
       let randInd = Math.floor(Math.random() * leafColor.length);
 
@@ -378,9 +392,12 @@ $(document).ready(() => {
           $autoUpdateButton.text('(Paused) Return to Home Feed');
           setTimeout(() => {
             clearTimeout(autoUpdateTimeoutId);
+            $subTweetFeedHeader.html('');
             $tweetFeedDiv.html('');
+            $subTweetFeedDiv.css('background-image', '/img/branch.png')
+            $subTweetFeedHeader.text(`@${tweet.user}'s Branch`);
             let userTweets = streams.users[tweet.user];
-            createTweets(userTweets.length, userTweets);
+            createTweets(0, userTweets);
           }, 400);
         })
         .css('cursor', 'pointer')
@@ -400,9 +417,11 @@ $(document).ready(() => {
             $autoUpdateButton.text('(Paused) Return to Home Feed');
             setTimeout(() => {
               clearTimeout(autoUpdateTimeoutId);
+              $subTweetFeedHeader.html('');
               $tweetFeedDiv.html('');
+              $subTweetFeedHeader.text(`${word} Leaves`);
               let hashtagTweets = streams.hashtag[word.slice(1)];
-              createTweets(hashtagTweets.length, hashtagTweets);
+              createTweets(0, hashtagTweets);
             }, 400);
           })
           .css('cursor', 'pointer')
@@ -419,12 +438,15 @@ $(document).ready(() => {
       let current = tweet.created_at;
       let timeElapsed = moment(current).fromNow();
       
-      const $timeSpan = $('<span>').text(`${timeElapsed}`)
-        .on('mouseover', () => {
-          timeElapsed = moment(current).from();
-          $timeSpan.text(`${timeElapsed}`);
-        });
+      const $timeSpan = $('<span>').text(`${timeElapsed}`);
       $pTime.append($timeSpan);
+
+      function timeElapsedUpdate() {
+        timeElapsed = moment(current).fromNow();
+        $timeSpan.text(`${timeElapsed}`);
+      }
+
+      setInterval(timeElapsedUpdate, 1000);
 
       $tweet.append($pText).append($pTime);
 
@@ -443,17 +465,14 @@ $(document).ready(() => {
 
   // At launch, show the current tweets stored in streams.home and update the feed as they are created.
   function autoUpdate() {
-    createTweets(streams.home.length - $tweetFeedDiv.children().length);
+    createTweets($tweetFeedDiv.children().length);
     autoUpdateTimeoutId = setTimeout(autoUpdate, (autoUpdateFeature ? tweetFeedOptions.updateTime : 10000000000));
   }
 
   autoUpdate();
 
   // Working on a way to update time while page is running
-  function timeElapsedUpdate() {
-    timeElapsed = moment(current).from();
-    $timeSpan.text(`${timeElapsed}`);
-  }
+  
   
 
 });

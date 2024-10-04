@@ -21,16 +21,16 @@ const users = Object.keys(streams.users);
 // Utility function for adding tweets to our data structures
 const addTweet = (newTweet) => {
   const username = newTweet.user;
-  streams.users[username].unshift(newTweet);
-  streams.home.unshift(newTweet);
+  streams.users[username].push(newTweet);
+  streams.home.push(newTweet);
   const splitMsg = newTweet.message.split(' ');
   for (let i = 0; i < splitMsg.length; i++) {
     if (splitMsg[i][0] === '#') {
       if (!streams.hashtag[splitMsg[i].slice(1)]) {
         streams.hashtag[splitMsg[i].slice(1)] = [];
-        streams.hashtag[splitMsg[i].slice(1)].unshift(newTweet);
+        streams.hashtag[splitMsg[i].slice(1)].push(newTweet);
       } else {
-        streams.hashtag[splitMsg[i].slice(1)].unshift(newTweet);
+        streams.hashtag[splitMsg[i].slice(1)].push(newTweet);
       }
     }
   }
