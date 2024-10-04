@@ -520,13 +520,43 @@ $(document).ready(() => {
     },
     {
       // Red
-      border: 'rgb(150, 30, 30)',
-      background: 'rgb(250, 80, 40)'
+      border: 'rgb(200, 100, 30)',
+      background: 'rgb(230, 80, 20)'
     },
     {
       // Purple-blueish
-      border: 'rgb(150, 30, 120)',
-      background: 'rgb(110, 100, 210)'
+      border: 'rgb(180, 100, 160)',
+      background: 'rgb(140, 130, 210)'
+    },
+    {
+      // Green #2
+      border: 'rgb(90, 180, 60)',
+      background: 'rgb(110, 180, 60)'
+    },
+    {
+      // Green #3
+      border: 'rgb(80, 170, 80)',
+      background: 'rgb(90, 140, 60)'
+    },
+    {
+      // Green #4
+      border: 'rgb(160, 240, 80)',
+      background: 'rgb(140, 220, 80)'
+    },
+    {
+      // Yellow #2
+      border: 'rgb(180, 180, 40)',
+      background: 'rgb(200, 220, 80)'
+    },
+    {
+      // Yellow #3
+      border: 'rgb(220, 200, 30)',
+      background: 'rgb(250, 240, 60)'
+    },
+    {
+      // Orange #2
+      border: 'rgb(230, 220, 30)',
+      background: 'rgb(250, 180, 30)'
     }
   ];
   
@@ -535,6 +565,7 @@ $(document).ready(() => {
     const $tweets = tweets.slice(start).map((tweet) => {
       
       let randInd = Math.floor(Math.random() * leafColor.length);
+      // randInd = 4;
 
       const $tweet = $('<div></div>')
         .attr('class', `${tweet.user}-tweet`)
