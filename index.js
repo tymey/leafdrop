@@ -25,7 +25,7 @@ $(document).ready(() => {
     .attr('id', 'all-contents')
     .attr('class', 'all-contents')
     .css('margin', 'auto')
-    .css('width', '850px');
+    .css('width', '920px');
   $body.append($allContentsDiv);
 
   ///////////////
@@ -444,7 +444,8 @@ $(document).ready(() => {
     .attr('id', 'content')
     .attr('class', 'content')
     .css('float', 'right')
-    .css('width', '500px');
+    .css('width', '500px')
+    .css('margin-right', '70px');
   $main.append($contentDiv);
 
   ///////////////////////////////////////
