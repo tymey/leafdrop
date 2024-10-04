@@ -216,7 +216,7 @@ $(document).ready(() => {
       $subTweetFeedHeader.html('');
       $tweetFeedDiv.html('');
       autoUpdateFeature = true;
-      setTimeout(autoUpdate, 50);
+      autoUpdate();
       $autoUpdateButton.text('Pause Feed');
     }
   })
@@ -235,7 +235,7 @@ $(document).ready(() => {
   .css('color', 'rgb(30, 105, 100)')
   .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
   .css('font-family', '"Lemon", serif')
-  .css('font-size', '1.5em');
+  .css('font-size', '0.93em');
 
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
@@ -376,7 +376,7 @@ $(document).ready(() => {
         // .css('border', '1px solid black')
         .on('click', () => {
           autoUpdateFeature = false;
-          $autoUpdateButton.text('(Paused) Return to Home Feed');
+          $autoUpdateButton.text('(Paused) Return to Home');
           setTimeout(() => {
             clearTimeout(autoUpdateTimeoutId);
             $subTweetFeedHeader.html('');
@@ -586,7 +586,7 @@ $(document).ready(() => {
         .css('font-weight', 'bold')
         .on('click', () => {
           autoUpdateFeature = false;
-          $autoUpdateButton.text('(Paused) Return to Home Feed');
+          $autoUpdateButton.text('(Paused) Return to Home');
           setTimeout(() => {
             clearTimeout(autoUpdateTimeoutId);
             $subTweetFeedHeader.html('');
@@ -617,7 +617,7 @@ $(document).ready(() => {
           $wordSpan.css('font-weight', 'bold')
           .on('click', () => {
             autoUpdateFeature = false;
-            $autoUpdateButton.text('(Paused) Return to Home Feed');
+            $autoUpdateButton.text('(Paused) Return to Home');
             setTimeout(() => {
               clearTimeout(autoUpdateTimeoutId);
               $subTweetFeedHeader.html('');
