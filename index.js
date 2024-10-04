@@ -122,7 +122,13 @@ $(document).ready(() => {
     .css('border-style', 'inset')
     .css('border-width', '5px')
     .css('border-color', 'green')
-    .css('background-color', 'rgb(50, 200, 30)');
+    .css('background-color', 'rgba(50, 200, 30, 0.5)')
+    .on('mouseenter', () => {
+      $usernameInput.css('background-color', 'rgb(50, 200, 30)')
+    })
+    .on('mouseleave', () => {
+      $usernameInput.css('background-color', 'rgba(50, 200, 30, 0.5)')
+    });
   $usernameInputDiv.append($usernameInput);
   $postTweetForm.append($usernameInputDiv);
 
@@ -141,9 +147,15 @@ $(document).ready(() => {
     .css('border-style', 'inset')
     .css('border-width', '5px')
     .css('border-color', 'green')
-    .css('background-color', 'rgb(50, 200, 30)')
+    .css('background-color', 'rgba(50, 200, 30, 0.5)')
     .css('margin-bottom', '5px')
-    .css('font-family', '"Sofadi One", system-ui');
+    .css('font-family', '"Sofadi One", system-ui')
+    .on('mouseenter', () => {
+      $tweetMsgTextArea.css('background-color', 'rgb(50, 200, 30)')
+    })
+    .on('mouseleave', () => {
+      $tweetMsgTextArea.css('background-color', 'rgba(50, 200, 30, 0.5)')
+    });
   $tweetMsgDiv.append($tweetMsgTextArea);
   $postTweetForm.append($tweetMsgDiv);
 
@@ -160,13 +172,22 @@ $(document).ready(() => {
       document.getElementById('username').value = '';
       document.getElementById('tweet-msg').value = '';
     })
+    .on('mouseenter', () => {
+      $tweetButton.css('background-color', 'rgb(30, 105, 100)')
+      .css('color', 'rgb(150, 250, 100)')
+    })
+    .on('mouseleave', () => {
+      $tweetButton.css('background-color', 'rgb(150, 250, 100)')
+      .css('color', 'rgb(30, 105, 100)')
+    })
     .css('cursor', 'pointer')
     .css('cursor', 'hand')
     .css('border-radius', '10px')
     .css('background-color', 'rgb(150, 250, 100)')
     .css('color', 'rgb(30, 105, 100)')
     .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
-    .css('font-family', '"Lemon", serif');
+    .css('font-family', '"Lemon", serif')
+    .css('font-size', '1.5em');
   $postTweetForm.append($tweetButton);
 
 
@@ -177,7 +198,7 @@ $(document).ready(() => {
   // Create #tweet-feed-options div and append to $contentDiv
   const $tweetFeedOptionsDiv = $('<div>')
     .attr('id', 'tweet-feed-options')
-    .css('margin-top', '40px')
+    .css('margin-top', '50px')
     .css('padding-left', '50px');
   $sidebarDiv.append($tweetFeedOptionsDiv);
 
@@ -199,13 +220,22 @@ $(document).ready(() => {
       $autoUpdateButton.text('Pause Feed');
     }
   })
+  .on('mouseenter', () => {
+    $autoUpdateButton.css('background-color', 'rgb(30, 105, 100)')
+    .css('color', 'rgb(150, 250, 100)')
+  })
+  .on('mouseleave', () => {
+    $autoUpdateButton.css('background-color', 'rgb(150, 250, 100)')
+    .css('color', 'rgb(30, 105, 100)')
+  })
   .css('cursor', 'pointer')
   .css('cursor', 'hand')
   .css('border-radius', '10px')
   .css('background-color', 'rgb(150, 250, 100)')
   .css('color', 'rgb(30, 105, 100)')
   .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
-  .css('font-family', '"Lemon", serif');
+  .css('font-family', '"Lemon", serif')
+  .css('font-size', '1.5em');
 
   // Append button to $tweetFeedOptionsDiv
   $tweetFeedOptionsDiv.append($autoUpdateButton);
@@ -277,7 +307,7 @@ $(document).ready(() => {
   ///// HASHTAG-TABLE (SIDEBAR DIV) /////
   ///////////////////////////////////////
 
-  // Create hashtag table header and append to $hashtagTableContainerDiv
+  // Create hashtag table header and append to $sidebarDiv
   const $hashtagTableHeader = $('<h3>')
     .text('#hashtags')
     .css('font-size', '2em')
@@ -287,6 +317,41 @@ $(document).ready(() => {
     .css('margin-top', '50px')
     .css('padding-left', '55px');
   $sidebarDiv.append($hashtagTableHeader);
+
+  // Create hashtag table button and append $sidebarDiv
+  let topNumber = 5;
+  
+  const $hashtagButton = $('<button>')
+    .attr('type', 'button')
+    .css('margin-left', '50px')
+    .text(`Show All #hashtags!`)
+    .on('click', () => {
+      if ($hashtagButton.text() === `Show All #hashtags!`) {
+        $hashtagButton.text('Show Top 5 #hashtags!');
+        topNumber = 1000000;
+        hashtagTable();
+      } else {
+        $hashtagButton.text('Show All #hashtags!');
+        topNumber = 5;
+        hashtagTable();
+      }
+    })
+    .on('mouseenter', () => {
+      $hashtagButton.css('background-color', 'rgb(30, 105, 100)')
+      .css('color', 'rgb(150, 250, 100)')
+    })
+    .on('mouseleave', () => {
+      $hashtagButton.css('background-color', 'rgb(150, 250, 100)')
+      .css('color', 'rgb(30, 105, 100)')
+    })
+    .css('cursor', 'pointer')
+    .css('cursor', 'hand')
+    .css('border-radius', '10px')
+    .css('background-color', 'rgb(150, 250, 100)')
+    .css('color', 'rgb(30, 105, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('font-family', '"Lemon", serif');
+  $sidebarDiv.append($hashtagButton);
 
   // Create #hashtag-table-container div and append to $sidebarDiv
   const $hashtagTableContainerDiv = $('<div>')
@@ -300,7 +365,7 @@ $(document).ready(() => {
   // Create dynamic Hashtag table and append to $hashtagTableContainerDiv
   // Hashtag table function
   function hashtagTable() {
-    $hashtagTableContainerDiv.children().last().remove();
+    $hashtagTableContainerDiv.children().remove();
     const createRow = (hashtag) => {
       const $row = $('<tr>');
       const $hashtag = $('<td>').text(`#${hashtag.name}`)
@@ -360,7 +425,7 @@ $(document).ready(() => {
 
     hashtagTable.sort((a, b) => b.number - a.number);
 
-    const $rows = hashtagTable.slice(0, streams.hashtag.length).map(createRow);
+    const $rows = hashtagTable.slice(0, topNumber).map(createRow);
 
     $table.append($rows);
 
