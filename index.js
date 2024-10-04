@@ -5,7 +5,7 @@ $(document).ready(() => {
   const $style = $('<style>');
   $head.append($style);
 
-  $style.text('body { background: url(/img/falling-leaf.png) repeat;}')
+  $style.text('body { background: url(https://i.imgur.com/UmGFi0h.png) repeat;}')
 
   ////////////////
   ///// BODY /////
@@ -74,7 +74,7 @@ $(document).ready(() => {
 
   // Create $siteLogo <img> tag with logo image and append to $siteLogoDiv
   const $siteLogo = $('<img>')
-    .attr('src', '/img/kawaii-leaf-lovepik.png')
+    .attr('src', 'https://i.imgur.com/wRKbNmq.png')
     .css('width', '310px');
     // .css('background-color', 'rgb(160, 250, 150)');
     $siteLogoDiv.append($siteLogo);
