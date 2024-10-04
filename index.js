@@ -273,6 +273,102 @@ $(document).ready(() => {
     updateTime: 500
   }
 
+  ///////////////////////////////////////
+  ///// HASHTAG-TABLE (SIDEBAR DIV) /////
+  ///////////////////////////////////////
+
+  // Create hashtag table header and append to $hashtagTableContainerDiv
+  const $hashtagTableHeader = $('<h3>')
+    .text('#hashtags')
+    .css('font-size', '2em')
+    .css('font-family', '"Lemon", serif')
+    .css('color', 'rgb(50, 155, 100)')
+    .css('text-shadow', '0 0 10px #99DD00, 0 0 20px #AAFF00')
+    .css('margin-top', '50px')
+    .css('padding-left', '55px');
+  $sidebarDiv.append($hashtagTableHeader);
+
+  // Create #hashtag-table-container div and append to $sidebarDiv
+  const $hashtagTableContainerDiv = $('<div>')
+    .attr('id', 'hashtag-table-container')
+    .css('margin-top', '10px')
+    .css('padding-left', '50px');
+  $sidebarDiv.append($hashtagTableContainerDiv);
+
+  
+
+  // Create dynamic Hashtag table and append to $hashtagTableContainerDiv
+  // Hashtag table function
+  function hashtagTable() {
+    $hashtagTableContainerDiv.children().last().remove();
+    const createRow = (hashtag) => {
+      const $row = $('<tr>');
+      const $hashtag = $('<td>').text(`#${hashtag.name}`)
+        .css('font-weight', 'bold')
+        .css('font-family', '"Sofadi One", system-ui')
+        .css('padding', '5px')
+        .css('padding-right', '10px')
+        // .css('border', '1px solid black')
+        .on('click', () => {
+          autoUpdateFeature = false;
+          $autoUpdateButton.text('(Paused) Return to Home Feed');
+          setTimeout(() => {
+            clearTimeout(autoUpdateTimeoutId);
+            $subTweetFeedHeader.html('');
+            $tweetFeedDiv.html('');
+            $subTweetFeedHeader.text(`#${hashtag.name} Leaves`);
+            let hashtagTweets = streams.hashtag[`${hashtag.name}`];
+            createTweets(0, hashtagTweets);
+          }, 400);
+        })
+        .on('mouseenter', () => {
+          $hashtag.css('text-decoration', 'underline');
+        })
+        .on('mouseleave', () => {
+          $hashtag.css('text-decoration', '');
+        })
+        .css('cursor', 'pointer')
+        .css('cursor', 'hand');
+      const $number = $('<td>').text(`${hashtag.number}`)
+        .css('font-family', '"Sofadi One", system-ui')
+        .css('padding', '5px')
+        .css('padding-left', '10px')
+        .css('padding-right', '10px')
+        // .css('border', '3px solid green')
+
+      $row.append($hashtag, $number);
+
+      return $row;
+    };
+
+    const $table = $('<table>')
+      .css('margin', '0px')
+      .css('width', '220px')
+      .css('padding', '5px')
+      .css('background-color', 'rgba(120, 200, 20, 0.5)')
+      .css('border-spacing', '0')
+      .css('border-collapse', 'separate')
+      .css('border-radius', '10px')
+      .css('border', '5px solid green');
+      
+      // Don't change these
+
+    let hashtagTable = [];
+    for (let key in streams.hashtag) {
+      hashtagTable.push( { name: key, number: streams.hashtag[key].length } );
+    }
+
+    hashtagTable.sort((a, b) => b.number - a.number);
+
+    const $rows = hashtagTable.slice(0, streams.hashtag.length).map(createRow);
+
+    $table.append($rows);
+
+    $hashtagTableContainerDiv.append($table)
+  }
+
+  // Updates table on a set interval
+  setInterval(hashtagTable, 500);
 
   /////////////////////////
   ///// CONTENT (DIV) /////
@@ -314,6 +410,11 @@ $(document).ready(() => {
   const $subTweetFeedDiv = $('<div>')
     .attr('id', 'sub-tweet-feed')
     .css('text-align', 'center')
+    .css('margin', 'auto')
+    .css('padding', '10px')
+    .css('font-family', '"Lemon", serif')
+    .css('color', 'rgb(100, 175, 50)')
+    .css('text-shadow', '0 0 5px #AAFF22, 0 0 20px #997722')
     .css('margin-bottom', '20px');
   $contentDiv.append($subTweetFeedDiv);
 
@@ -394,11 +495,17 @@ $(document).ready(() => {
             clearTimeout(autoUpdateTimeoutId);
             $subTweetFeedHeader.html('');
             $tweetFeedDiv.html('');
-            $subTweetFeedDiv.css('background-image', '/img/branch.png')
-            $subTweetFeedHeader.text(`@${tweet.user}'s Branch`);
+            $subTweetFeedHeader.text(`@${tweet.user} Branch`)
+              .css('font-size', '1.5em');
             let userTweets = streams.users[tweet.user];
             createTweets(0, userTweets);
           }, 400);
+        })
+        .on('mouseenter', () => {
+          $userSpan.css('text-decoration', 'underline');
+        })
+        .on('mouseleave', () => {
+          $userSpan.css('text-decoration', '');
         })
         .css('cursor', 'pointer')
         .css('cursor', 'hand');
@@ -423,6 +530,12 @@ $(document).ready(() => {
               let hashtagTweets = streams.hashtag[word.slice(1)];
               createTweets(0, hashtagTweets);
             }, 400);
+          })
+          .on('mouseenter', () => {
+            $wordSpan.css('text-decoration', 'underline');
+          })
+          .on('mouseleave', () => {
+            $wordSpan.css('text-decoration', '');
           })
           .css('cursor', 'pointer')
           .css('cursor', 'hand');
